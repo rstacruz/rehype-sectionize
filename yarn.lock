@@ -1594,7 +1594,7 @@ hast-util-parse-selector@^2.0.0:
   resolved "https://registry.yarnpkg.com/hast-util-parse-selector/-/hast-util-parse-selector-2.2.4.tgz#60c99d0b519e12ab4ed32e58f150ec3f61ed1974"
   integrity sha512-gW3sxfynIvZApL4L07wryYF4+C9VvH3AUi7LAnVXV4MneGEgwOByXvFo18BgmTWnm7oHAe874jKbIB1YhHSIzA==
 
-hast-util-to-html@^7.0.0, hast-util-to-html@^7.1.0:
+hast-util-to-html@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/hast-util-to-html/-/hast-util-to-html-7.1.0.tgz#aa580e7b846438ee1e7af2bee6a650062eb0c3ec"
   integrity sha512-RjvNL41bYnxTOA+s8W8mjhVxH1J0dXza9hlakVHbghFsfj3JO/lsq3DsR/Md2HbynS8y89/LA7k0lhtnYJ1Yzw==
@@ -2904,14 +2904,6 @@ regex-not@^1.0.0, regex-not@^1.0.2:
   dependencies:
     extend-shallow "^3.0.2"
     safe-regex "^1.1.0"
-
-rehype-stringify@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/rehype-stringify/-/rehype-stringify-7.0.0.tgz#abbb172b3a2784a5739394846f6092eefda0ae1f"
-  integrity sha512-u3dQI7mIWN2X1H0MBFPva425HbkXgB+M39C9SM5leUS2kh5hHUn2SxQs2c2yZN5eIHipoLMojC0NP5e8fptxvQ==
-  dependencies:
-    hast-util-to-html "^7.0.0"
-    xtend "^4.0.0"
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
