@@ -1,6 +1,6 @@
 {
   "name": "@rstacruz/rehype-sectionize",
-  "description": "",
+  "description": "Divide headings into sections",
   "version": "0.0.1",
   "author": "Rico Sta. Cruz <rstacruz@users.noreply.github.com>",
   "bugs": {
@@ -12,6 +12,7 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.9.0",
     "@babel/plugin-transform-react-jsx": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
     "@types/jest": "^25.2.1",
     "hast-util-to-html": "^7.1.0",
     "hastscript": "^5.1.2",
@@ -27,6 +28,10 @@
   ],
   "license": "MIT",
   "main": "lib/index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rstacruz/rehype-sectionize.git"
@@ -34,10 +39,5 @@
   "scripts": {
     "prepare": "tsc",
     "test": "jest"
-  },
-  "xjest": {
-    "testPathIgnorePatterns": [
-      "<rootDir>/lib"
-    ]
   }
 }
