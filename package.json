@@ -28,12 +28,18 @@
     "unist"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rstacruz/rehype-sectionize.git"
   },
   "scripts": {
+    "prepare": "tsc",
     "test": "jest"
+  },
+  "xjest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/lib"
+    ]
   }
 }
