@@ -1,26 +1,26 @@
 {
   "compilerOptions": {
-    "target": "es5", // es5 | es2015 | esnext
-    "module": "commonjs",
-
-    // JS options
-    "allowJs": true, //        Compile .js files
-    "checkJs": true, //        Typecheck .js files
-    "declaration": true, //    Generate .d.ts files
-    "declarationMap": true, // Generate .d.ts.map
-    "sourceMap": true, //      Generate .js.map
-
-    // Jsx
-    "jsx": "preserve",
-
     // Source files
     "outDir": "./lib",
     "rootDir": "./src",
 
+    // Generated code style
+    "target": "es5", //        es5 | es2015 | esnext
+
+    // Files to generate
+    "declaration": true, //    Generate .d.ts files
+    "declarationMap": true, // Generate .d.ts.map
+    "sourceMap": true, //      Generate .js.map
+
+    // Compatibility
+    "lib": ["es2020"], //      Allow Map, Set, .flat, etc
+    "esModuleInterop": true,
+
+    // Jsx
+    "jsx": "preserve",
+
     // Strict mode
-    "strict": true,
-    "noImplicitAny": false,
-    "esModuleInterop": true
+    "strict": true
   },
   "include": [
     "src/**/*"

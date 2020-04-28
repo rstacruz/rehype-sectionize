@@ -21,14 +21,15 @@ export type BodyOptions = SectionOptions & {
   enabled: boolean;
 };
 
+/** Options */
 export type Options = {
   level: string;
+  allowedTypes: { [key: string]: boolean };
   section: SectionOptions;
   body: BodyOptions;
 };
 
-export type PartialOptions = {
-  level?: string;
+export type PartialOptions = Partial<Options> & {
   section?: Partial<SectionOptions>;
   body?: Partial<BodyOptions>;
 };

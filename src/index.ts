@@ -1,13 +1,10 @@
 import visit from "unist-util-visit";
+import { Node, Options, ParentNode, PartialOptions } from "./types";
 
-/** @typedef {import('./types').Node} Node */
-/** @typedef {import('./types').Options} Options */
-/** @typedef {import('./types').ParentNode} ParentNode */
-/** @typedef {import('./types').PartialOptions} PartialOptions */
-
-/** @type Options */
-const defaults = {
+/** Default options */
+const defaults: Options = {
   level: "h2",
+  allowedTypes: { element: true, jsx: true, text: true },
   section: {
     addHeadingClass: true,
     tagName: "section",
@@ -21,90 +18,54 @@ const defaults = {
   },
 };
 
-/**
- * @param {PartialOptions[]} optionsList
- */
-
-export const multi = (optionsList = []) => {
-  return (/** @type Node */ root) => {
-    for (let options of optionsList) plugin(options)(root);
-    return root;
-  };
-};
-
-/**
- * @param {PartialOptions | PartialOptions[]} opts
- */
-
-export const plugin = (opts = {}) => {
+/** Rehype plugin */
+export const plugin = (opts: PartialOptions | PartialOptions[] = {}) => {
   // Account for multiple runs
   if (Array.isArray(opts)) return multi(opts);
 
   // Merge options and defaults
-  const options = {
+  const options: Options = {
     ...defaults,
     ...opts,
     section: { ...defaults.section, ...opts.section },
     body: { ...defaults.body, ...opts.body },
   };
 
-  /**
-   * @param {Node} root
-   */
-
-  const run = (root) => {
-    // @ts-ignore
-    visit(root, isParent, (/** @type ParentNode */ node) => {
+  /** Main run routine. */
+  const run = (root: Node): Node => {
+    visit(root, isParent as any, (node: ParentNode) => {
       node.children = wrapNodes(node.children);
     });
 
     // Delete the `_wrapped` flags
-    visit(root, (node) => {
+    visit(root, (node: Node) => {
       if (node._wrapped) delete node._wrapped;
     });
 
     return root;
   };
 
-  /**
-   * Checks if a given node should be processed.
-   * @param {Node} node
-   * @return {boolean}
-   */
-
-  function isParent(node) {
+  /** Checks if a given node should be processed.  */
+  function isParent(node: Node): boolean {
     if (node._wrapped) return false;
     if (!node.children) return false;
     if (!Array.isArray(node.children)) return false;
     return !!node.children.find(isHeading);
   }
 
-  /**
-   * @param {Node} node
-   */
-
-  const isHeading = (node) => {
+  /** Checks if a node is a heading. */
+  const isHeading = (node: Node): boolean => {
     return node.type === "element" && node.tagName === options.level;
   };
 
-  /**
-   * Checks if a node can be placed inside a section body.
-   * @param {Node} node
-   */
-
-  const isChild = (node) => {
-    const type = node.type;
-    return type === "element" || type === "jsx" || type === "text";
+  /** Checks if a node can be placed inside a section body. */
+  const isChild = (node: Node): boolean => {
+    return options.allowedTypes[node.type];
   };
 
-  /**
-   * @param {Node[]} nodes
-   */
-
-  const wrapNodes = (nodes) => {
+  const wrapNodes = (nodes: Node[]) => {
     let [section, body] = createSection();
-    /** @type {(Node[] | Node)[]} */
-    const sections = [section];
+    const sections: (Node[] | Node)[] = [section];
 
     for (let node of nodes) {
       if (isHeading(node)) {
@@ -123,14 +84,9 @@ export const plugin = (opts = {}) => {
     return sections.flat(1);
   };
 
-  /**
-   * @param {Node=} heading
-   * return {[Node, Node]}
-   */
-
-  const createSection = (heading) => {
-    /** @type ParentNode */
-    const section = {
+  /** Create a section */
+  const createSection = (heading: Node | void): [ParentNode, ParentNode] => {
+    const section: ParentNode = {
       type: "element",
       properties: { ...options.section.properties },
       tagName: options.section.tagName,
@@ -147,8 +103,7 @@ export const plugin = (opts = {}) => {
 
     // TODO options.body.addHeadingClass
     if (options.body.enabled) {
-      /** @type ParentNode */
-      const body = {
+      const body: ParentNode = {
         type: "element",
         tagName: "div",
         children: [],
@@ -165,13 +120,8 @@ export const plugin = (opts = {}) => {
   return run;
 };
 
-/**
- * Add a class name to a node.
- * @param {Node} node
- * @param {string} className
- */
-
-function addClass(node, className) {
+/** Add a class name to a node.  */
+function addClass(node: Node, className: string): void {
   if (!node.properties) node.properties = {};
 
   if (node.properties.className) {
@@ -181,11 +131,15 @@ function addClass(node, className) {
   }
 }
 
-/**
- * Checks if a node is empty.
- * @param {Node} node
- */
-
-function hasChildren(node) {
+/** Checks if a node is empty.  */
+function hasChildren(node: Node): boolean {
   return Array.isArray(node.children) && node.children.length !== 0;
+}
+
+/** Run multiple configurations serially. */
+function multi(optionsList: PartialOptions[] = []) {
+  return (root: Node) => {
+    for (let options of optionsList) plugin(options)(root);
+    return root;
+  };
 }
