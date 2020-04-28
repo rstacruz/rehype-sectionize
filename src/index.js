@@ -15,9 +15,10 @@ const defaults = {
   },
 };
 
-export const wrap = (opts = {}) => {
+export const plugin = (opts = {}) => {
   // Merge options
   const options = {
+    ...defaults,
     ...opts,
     section: { ...defaults.section, ...opts.section },
     body: { ...defaults.body, ...opts.body },
@@ -47,6 +48,7 @@ export const wrap = (opts = {}) => {
   function canProcess(node) {
     if (node.type !== "element") return false;
     if (node._wrapped) return false;
+    if (!node.children) return false;
     return !!node.children.find(isHeading);
   }
 

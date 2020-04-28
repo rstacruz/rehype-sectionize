@@ -1,5 +1,5 @@
 import h from "hastscript";
-import { wrap } from "./index";
+import { plugin as wrap } from "./index";
 import toHtml from "hast-util-to-html";
 import produce from "immer";
 
@@ -30,7 +30,7 @@ it("works", () => {
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
 
-it.only("add heading class", () => {
+it("add heading class", () => {
   const source = (
     <main>
       <h2 className="intro">Introduction</h2>
@@ -47,6 +47,6 @@ it.only("add heading class", () => {
     </main>
   );
 
-  wrap()(source);
+  wrap({ section: { addHeadingClass: true } })(source);
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
