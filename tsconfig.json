@@ -2,18 +2,24 @@
   "compilerOptions": {
     "target": "es5", // es5 | es2015 | esnext
     "module": "commonjs",
-    "allowJs": true,
-    "checkJs": true,
+
+    // JS options
+    "allowJs": true, //        Compile .js files
+    "checkJs": true, //        Typecheck .js files
+    "declaration": true, //    Generate .d.ts files
+    "declarationMap": true, // Generate .d.ts.map
+    "sourceMap": true, //      Generate .js.map
+
+    // Jsx
     "jsx": "preserve",
-    "declaration": true,                   /* Generates corresponding '.d.ts' file. */
-    "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-    "sourceMap": true,                     /* Generates corresponding '.map' file. */
-    // "outFile": "./",                       /* Concatenate and emit output to single file. */
+
+    // Source files
     "outDir": "./lib",
     "rootDir": "./src",
+
+    // Strict mode
     "strict": true,
     "noImplicitAny": false,
-    "moduleResolution": "node",
     "esModuleInterop": true
   },
   "include": [

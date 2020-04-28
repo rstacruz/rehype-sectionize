@@ -1,7 +1,6 @@
 import h from "hastscript";
-import { plugin as wrap } from "./index";
+import { plugin as wrap } from "../index";
 import toHtml from "hast-util-to-html";
-import produce from "immer";
 
 it("works", () => {
   const source = (
@@ -177,3 +176,4 @@ it("h2 and h3", () => {
   wrap([{ level: "h3" }, { level: "h2" }])(source);
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
+

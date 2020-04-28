@@ -54,7 +54,7 @@ export const plugin = (opts = {}) => {
 
   const run = (root) => {
     // @ts-ignore
-    visit(root, canProcess, (/** @type ParentNode */ node) => {
+    visit(root, isParent, (/** @type ParentNode */ node) => {
       node.children = wrapNodes(node.children);
     });
 
@@ -67,12 +67,12 @@ export const plugin = (opts = {}) => {
   };
 
   /**
+   * Checks if a given node should be processed.
    * @param {Node} node
    * @return {boolean}
    */
 
-  function canProcess(node) {
-    if (node.type !== "element") return false;
+  function isParent(node) {
     if (node._wrapped) return false;
     if (!node.children) return false;
     if (!Array.isArray(node.children)) return false;
@@ -88,11 +88,22 @@ export const plugin = (opts = {}) => {
   };
 
   /**
+   * Checks if a node can be placed inside a section body.
+   * @param {Node} node
+   */
+
+  const isChild = (node) => {
+    const type = node.type;
+    return type === "element" || type === "jsx" || type === "text";
+  };
+
+  /**
    * @param {Node[]} nodes
    */
 
   const wrapNodes = (nodes) => {
     let [section, body] = createSection();
+    /** @type {(Node[] | Node)[]} */
     const sections = [section];
 
     for (let node of nodes) {
@@ -102,12 +113,14 @@ export const plugin = (opts = {}) => {
         [section, body] = createSection(node);
         sections.push(section);
         section.children.unshift(node);
-      } else {
+      } else if (isChild(node)) {
         if (body.children) body.children.push(node);
+      } else {
+        sections.push(node);
       }
     }
 
-    return sections;
+    return sections.flat(1);
   };
 
   /**
