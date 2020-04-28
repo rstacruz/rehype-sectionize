@@ -14,6 +14,7 @@
 
     // Compatibility
     "lib": ["es2020"], //      Allow Map, Set, .flat, etc
+    "moduleResolution": "node",
     "esModuleInterop": true,
 
     // Jsx
@@ -27,6 +28,8 @@
   ],
   "exclude": [
     "coverage",
+    "node_modules/@types/babel__core/**",
+    "node_modules/@types/jest/**/*",
     "**/*.test.js"
   ]
 }
