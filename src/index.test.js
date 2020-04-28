@@ -50,3 +50,36 @@ it("add heading class", () => {
   wrap({ section: { addHeadingClass: true } })(source);
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
+
+it("add body", () => {
+  const source = (
+    <main>
+      <h2>Introduction</h2>
+      <p>Hello there</p>
+      <p>This is an introduction</p>
+      <h2>Thanks</h2>
+      <p>That's all</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <section>
+        <h2>Introduction</h2>
+        <div>
+          <p>Hello there</p>
+          <p>This is an introduction</p>
+        </div>
+      </section>
+      <section>
+        <h2>Thanks</h2>
+        <div>
+          <p>That's all</p>
+        </div>
+      </section>
+    </main>
+  );
+
+  wrap({ body: { enabled: true } })(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});

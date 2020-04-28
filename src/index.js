@@ -16,7 +16,7 @@ const defaults = {
 };
 
 export const plugin = (opts = {}) => {
-  // Merge options
+  // Merge options and defaults
   const options = {
     ...defaults,
     ...opts,
@@ -65,18 +65,19 @@ export const plugin = (opts = {}) => {
    */
 
   const wrapNodes = (nodes) => {
-    let section = createSection();
+    let [section, body] = createSection();
     const sections = [section];
 
     for (let node of nodes) {
       if (isHeading(node)) {
         // If the previous section has nothing in it, remove it
-        if (section.children.length === 0) sections.pop();
-        section = createSection(node);
+        if (body.children.length === 0) sections.pop();
+        [section, body] = createSection(node);
         sections.push(section);
+        section.children.unshift(node);
+      } else {
+        body.children.push(node);
       }
-
-      section.children.push(node);
     }
 
     return sections;
@@ -84,26 +85,39 @@ export const plugin = (opts = {}) => {
 
   /**
    * @param {Node[]} heading
+   * @return {[Node, Node]}
    */
 
   const createSection = (heading) => {
-    const props = { ...options.section.properties };
-    let className = undefined;
-
-    // Add H2 class name
-    if (options.section.addHeadingClass) {
-      if (heading && heading.properties && heading.properties.className) {
-        addClass(props, heading.properties.className);
-      }
-    }
-
-    return {
+    const section = {
       type: "element",
-      properties: props,
+      properties: { ...options.section.properties },
       tagName: options.section.tagName,
       children: [],
       _wrapped: true,
     };
+
+    // Add H2 class name
+    if (options.section.addHeadingClass) {
+      if (heading && heading.properties && heading.properties.className) {
+        addClass(section.properties, heading.properties.className);
+      }
+    }
+
+    // TODO options.body.addHeadingClass
+    if (options.body.enabled) {
+      const body = {
+        type: "element",
+        tagName: "div",
+        children: [],
+        _wrapped: true,
+      };
+
+      section.children = [body];
+      return [section, body];
+    } else {
+      return [section, section];
+    }
   };
 
   return run;
