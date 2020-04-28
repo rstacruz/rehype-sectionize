@@ -1,5 +1,11 @@
 import visit from "unist-util-visit";
 
+/** @typedef {import('./types').Node} Node */
+/** @typedef {import('./types').Options} Options */
+/** @typedef {import('./types').ParentNode} ParentNode */
+/** @typedef {import('./types').PartialOptions} PartialOptions */
+
+/** @type Options */
 const defaults = {
   level: "h2",
   section: {
@@ -15,12 +21,20 @@ const defaults = {
   },
 };
 
+/**
+ * @param {PartialOptions[]} optionsList
+ */
+
 export const multi = (optionsList = []) => {
-  return (root) => {
+  return (/** @type Node */ root) => {
     for (let options of optionsList) plugin(options)(root);
     return root;
   };
 };
+
+/**
+ * @param {PartialOptions | PartialOptions[]} opts
+ */
 
 export const plugin = (opts = {}) => {
   // Account for multiple runs
@@ -39,7 +53,8 @@ export const plugin = (opts = {}) => {
    */
 
   const run = (root) => {
-    visit(root, canProcess, (node) => {
+    // @ts-ignore
+    visit(root, canProcess, (/** @type ParentNode */ node) => {
       node.children = wrapNodes(node.children);
     });
 
@@ -53,12 +68,14 @@ export const plugin = (opts = {}) => {
 
   /**
    * @param {Node} node
+   * @return {boolean}
    */
 
   function canProcess(node) {
     if (node.type !== "element") return false;
     if (node._wrapped) return false;
     if (!node.children) return false;
+    if (!Array.isArray(node.children)) return false;
     return !!node.children.find(isHeading);
   }
 
@@ -81,12 +98,12 @@ export const plugin = (opts = {}) => {
     for (let node of nodes) {
       if (isHeading(node)) {
         // If the previous section has nothing in it, remove it
-        if (body.children.length === 0) sections.pop();
+        if (!hasChildren(body)) sections.pop();
         [section, body] = createSection(node);
         sections.push(section);
         section.children.unshift(node);
       } else {
-        body.children.push(node);
+        if (body.children) body.children.push(node);
       }
     }
 
@@ -94,11 +111,12 @@ export const plugin = (opts = {}) => {
   };
 
   /**
-   * @param {Node[]} heading
-   * @return {[Node, Node]}
+   * @param {Node=} heading
+   * return {[Node, Node]}
    */
 
   const createSection = (heading) => {
+    /** @type ParentNode */
     const section = {
       type: "element",
       properties: { ...options.section.properties },
@@ -110,12 +128,13 @@ export const plugin = (opts = {}) => {
     // Add H2 class name
     if (options.section.addHeadingClass) {
       if (heading && heading.properties && heading.properties.className) {
-        addClass(section.properties, heading.properties.className);
+        addClass(section, heading.properties.className);
       }
     }
 
     // TODO options.body.addHeadingClass
     if (options.body.enabled) {
+      /** @type ParentNode */
       const body = {
         type: "element",
         tagName: "div",
@@ -134,15 +153,26 @@ export const plugin = (opts = {}) => {
 };
 
 /**
- * Add a class name
- * @param {{ className?: string }} props
+ * Add a class name to a node.
+ * @param {Node} node
  * @param {string} className
  */
 
-function addClass(props, className) {
-  if (props.className) {
-    props.className = `${props.className} ${className}`;
+function addClass(node, className) {
+  if (!node.properties) node.properties = {};
+
+  if (node.properties.className) {
+    node.properties.className = `${node.properties.className} ${className}`;
   } else {
-    props.className = className;
+    node.properties.className = className;
   }
+}
+
+/**
+ * Checks if a node is empty.
+ * @param {Node} node
+ */
+
+function hasChildren(node) {
+  return Array.isArray(node.children) && node.children.length !== 0;
 }

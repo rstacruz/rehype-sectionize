@@ -12,12 +12,14 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.9.0",
     "@babel/plugin-transform-react-jsx": "^7.9.4",
+    "@types/jest": "^25.2.1",
     "hast-util-to-html": "^7.1.0",
     "hastscript": "^5.1.2",
     "immer": "^6.0.3",
     "jest": "^25.4.0",
     "microbundle": "^0.11.0",
-    "rehype-stringify": "^7.0.0"
+    "rehype-stringify": "^7.0.0",
+    "typescript": "^3.8.3"
   },
   "homepage": "https://github.com/rstacruz/rehype-sectionize#readme",
   "keywords": [
