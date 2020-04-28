@@ -15,7 +15,17 @@ const defaults = {
   },
 };
 
+export const multi = (optionsList = []) => {
+  return (root) => {
+    for (let options of optionsList) plugin(options)(root);
+    return root;
+  };
+};
+
 export const plugin = (opts = {}) => {
+  // Account for multiple runs
+  if (Array.isArray(opts)) return multi(opts);
+
   // Merge options and defaults
   const options = {
     ...defaults,

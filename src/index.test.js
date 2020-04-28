@@ -30,6 +30,48 @@ it("works", () => {
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
 
+it("no h2", () => {
+  const source = (
+    <main>
+      <p>Hello there</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <p>Hello there</p>
+    </main>
+  );
+
+  wrap()(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
+
+it("prelude (p's before an h2)", () => {
+  const source = (
+    <main>
+      <p>Hello there</p>
+      <p>That's all</p>
+      <h2>Intro</h2>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <section>
+        <p>Hello there</p>
+        <p>That's all</p>
+      </section>
+      <section>
+        <h2>Intro</h2>
+      </section>
+    </main>
+  );
+
+  wrap()(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
+
 it("add heading class", () => {
   const source = (
     <main>
@@ -81,5 +123,34 @@ it("add body", () => {
   );
 
   wrap({ body: { enabled: true } })(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
+
+it("h2 and h3", () => {
+  const source = (
+    <main>
+      <h2>Introduction</h2>
+      <p>Hello there</p>
+      <h3>Hey</h3>
+      <p>This is an introduction</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <section>
+        <section>
+          <h2>Introduction</h2>
+          <p>Hello there</p>
+        </section>
+      </section>
+      <section>
+        <h3>Hey</h3>
+        <p>This is an introduction</p>
+      </section>
+    </main>
+  );
+
+  wrap([{ level: "h3" }, { level: "h2" }])(source);
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
