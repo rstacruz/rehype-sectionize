@@ -92,6 +92,33 @@ it("add heading class", () => {
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
 
+it("add heading class to existing class", () => {
+  const source = (
+    <main>
+      <h2 className="intro">Introduction</h2>
+      <p>Hello there</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <h2-section className="default-class intro">
+        <h2 className="intro">Introduction</h2>
+        <p>Hello there</p>
+      </h2-section>
+    </main>
+  );
+
+  wrap({
+    section: {
+      addHeadingClass: true,
+      tagName: "h2-section",
+      properties: { className: "default-class" },
+    },
+  })(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
+
 it("append heading class", () => {
   const source = (
     <main>

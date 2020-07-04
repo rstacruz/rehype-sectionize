@@ -17,23 +17,26 @@ export type SectionOptions = {
   properties: { [key: string]: string };
 };
 
-export type BodyOptions = SectionOptions & {
-  enabled: boolean;
-};
+export type BodyOptions = {};
 
-export type PreludeOptions = {
-  enabled: boolean;
-  tagName: string;
-  properties: { [key: string]: string };
-};
+export type PreludeOptions = {};
 
 /** Options */
 export type Options = {
   level: string;
   allowedTypes: { [key: string]: boolean };
-  prelude: PreludeOptions;
+  prelude: {
+    enabled: boolean;
+    tagName: string;
+    properties: { [key: string]: string };
+  };
   section: SectionOptions;
-  body: BodyOptions;
+  body: {
+    enabled: boolean;
+    addHeadingClass: boolean;
+    tagName: string;
+    properties: { [key: string]: string };
+  };
 };
 
 export type PartialOptions = Partial<Options> & {
