@@ -1,7 +1,7 @@
 {
   "name": "@rstacruz/rehype-sectionize",
   "description": "Divide headings into sections",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Rico Sta. Cruz <rstacruz@users.noreply.github.com>",
   "bugs": {
     "url": "https://github.com/rstacruz/rehype-sectionize/issues"
