@@ -7,8 +7,50 @@
 
 ## Usage
 
+This package is available as a Rehype plugin.
+
+API usage:
+
 ```js
 require("@rstacruz/rehype-sectionize").plugin(options)(root);
+```
+
+Usage with [`rehype`](https://npmjs.com/package/rehype):
+
+```js
+const rehype = require("rehype");
+const sectionize = require("@rstacruz/rehype-sectionize").plugin;
+
+rehype()
+  .use(sectionize, { level: "h2" })
+  .process(fs.readFileSync("hello.html"), (err, file) => {
+    if (err) throw err;
+    console.log(String(file));
+  });
+```
+
+Usage with [`gatsby-plugin-mdx`](https://npmjs.com/package/gatsby-plugin-mdx):
+
+```js
+// gatsby-config.js
+module.exports = {
+  plugins: [
+    {
+      resolve: "gatsby-plugin-mdx",
+      options: {
+        rehypePlugins: [
+          [
+            require("@rstacruz/rehype-sectionize").plugin,
+            {
+              /* Options here */
+              level: "h2",
+            },
+          ],
+        ],
+      },
+    },
+  ],
+};
 ```
 
 ## Configuration
