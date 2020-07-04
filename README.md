@@ -71,6 +71,7 @@ module.exports = {
 | `body.enabled`            | `false`                                    | Enables the body wrapper                                                 |
 | `body.tagName`            | `"div"`                                    | Tag name used in the body inside the section                             |
 | `body.properties`         | `{}`                                       | Properties to add to the body wrapper                                    |
+| `body.addHeadingClass`    | `false`                                    | If true, class names from the H2 will be added to the body element       |
 
 ## Thanks
 

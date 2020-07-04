@@ -9,18 +9,18 @@ export const defaults: Options = {
   allowedTypes: { element: true, jsx: true, text: true },
   prelude: {
     enabled: true,
-    tagName: "section",
     properties: {},
+    tagName: "section",
   },
   section: {
     addHeadingClass: true,
-    tagName: "section",
     properties: {},
+    tagName: "section",
   },
   body: {
+    addHeadingClass: false,
     enabled: false,
-    addHeadingClass: true,
-    tagName: "div",
     properties: {},
+    tagName: "div",
   },
 };

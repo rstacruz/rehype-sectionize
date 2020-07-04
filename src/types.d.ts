@@ -11,31 +11,25 @@ export type ParentNode = LeafNode & {
 
 export type Node = LeafNode | ParentNode;
 
-export type SectionOptions = {
-  addHeadingClass: boolean;
-  tagName: string;
-  properties: { [key: string]: string };
-};
-
-export type BodyOptions = {};
-
-export type PreludeOptions = {};
-
 /** Options */
 export type Options = {
-  level: string;
   allowedTypes: { [key: string]: boolean };
+  level: string;
   prelude: {
     enabled: boolean;
-    tagName: string;
     properties: { [key: string]: string };
+    tagName: string;
   };
-  section: SectionOptions;
-  body: {
-    enabled: boolean;
+  section: {
     addHeadingClass: boolean;
-    tagName: string;
     properties: { [key: string]: string };
+    tagName: string;
+  };
+  body: {
+    addHeadingClass: boolean;
+    enabled: boolean;
+    properties: { [key: string]: string };
+    tagName: string;
   };
 };
 

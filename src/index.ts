@@ -91,12 +91,11 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
       _wrapped: true,
     };
 
+    const headingClass =
+      heading && heading.properties && heading.properties.className;
+
     // Add H2 class name
-    if (options.section.addHeadingClass) {
-      if (heading && heading.properties && heading.properties.className) {
-        addClass(section, heading.properties.className);
-      }
-    }
+    if (headingClass) addClass(section, headingClass);
 
     // Create the body
     if (options.body.enabled) {
@@ -107,6 +106,11 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
         children: [],
         _wrapped: true,
       };
+
+      // Add H2 class anme
+      if (headingClass && options.body.addHeadingClass) {
+        addClass(body, headingClass);
+      }
 
       section.children = [body];
       return [section, body];
