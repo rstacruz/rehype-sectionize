@@ -7,6 +7,11 @@ import { Options } from "./types";
 export const defaults: Options = {
   level: "h2",
   allowedTypes: { element: true, jsx: true, text: true },
+  prelude: {
+    enabled: true,
+    tagName: "section",
+    properties: {},
+  },
   section: {
     addHeadingClass: true,
     tagName: "section",

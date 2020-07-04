@@ -209,3 +209,105 @@ it("add body with classes", () => {
   wrap({ body: { enabled: true, properties: { className: "body" } } })(source);
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
+
+it("h2 and h3: don't absorb upper levels", () => {
+  const source = (
+    <main>
+      <h2>Introduction</h2>
+      <p>Hello there</p>
+      <h3>Hey</h3>
+      <p>This is an introduction</p>
+      <h2>Summary</h2>
+      <p>This is the summary</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <h2-section>
+        <h2>Introduction</h2>
+        <p>Hello there</p>
+        <h3-section>
+          <h3>Hey</h3>
+          <p>This is an introduction</p>
+        </h3-section>
+      </h2-section>
+      <h2-section>
+        <h2>Summary</h2>
+        <p>This is the summary</p>
+      </h2-section>
+    </main>
+  );
+
+  wrap([
+    { level: "h2", section: { tagName: "h2-section" } },
+    {
+      level: "h3",
+      section: { tagName: "h3-section" },
+      prelude: { enabled: false },
+    },
+  ])(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
+
+describe("prelude", () => {
+  it("disabled prelude", () => {
+    const source = (
+      <main>
+        <p>Prelude</p>
+        <h2>Introduction</h2>
+        <p>Hello there</p>
+      </main>
+    );
+
+    const expected = (
+      <main>
+        <p>Prelude</p>
+        <h2-section>
+          <h2>Introduction</h2>
+          <p>Hello there</p>
+        </h2-section>
+      </main>
+    );
+
+    wrap([
+      {
+        level: "h2",
+        prelude: { enabled: false },
+        section: { tagName: "h2-section" },
+      },
+    ])(source);
+    expect(toHtml(source)).toEqual(toHtml(expected));
+  });
+
+  it("enabled prelude", () => {
+    const source = (
+      <main>
+        <p>Prelude</p>
+        <h2>Introduction</h2>
+        <p>Hello there</p>
+      </main>
+    );
+
+    const expected = (
+      <main>
+        <prelude-section>
+          <p>Prelude</p>
+        </prelude-section>
+        <h2-section>
+          <h2>Introduction</h2>
+          <p>Hello there</p>
+        </h2-section>
+      </main>
+    );
+
+    wrap([
+      {
+        level: "h2",
+        prelude: { enabled: true, tagName: "prelude-section" },
+        section: { tagName: "h2-section" },
+      },
+    ])(source);
+    expect(toHtml(source)).toEqual(toHtml(expected));
+  });
+});

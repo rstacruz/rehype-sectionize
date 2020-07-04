@@ -55,18 +55,22 @@ module.exports = {
 
 ## Configuration
 
-| Key                       | Default value                              | Description                                                   |
-| ------------------------- | ------------------------------------------ | ------------------------------------------------------------- |
-| `level`                   | `"h2"`                                     | The heading to fix up                                         |
-| `allowedTypes`            | `{ element: true, jsx: true, text: true }` | What node types to allow to be placed inside a section        |
+| Key                       | Default value                              | Description                                                              |
+| ------------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
+| `level`                   | `"h2"`                                     | The heading to fix up                                                    |
+| `allowedTypes`            | `{ element: true, jsx: true, text: true }` | What node types to allow to be placed inside a section                   |
 |                           |                                            |
-| `section.tagName`         | `"section"`                                | Tag name used in the section                                  |
-| `section.properties`      | `{}`                                       | Properties to add to the section                              |
-| `section.addHeadingClass` | `true`                                     | If true, class names from the H2 will be added to the section |
+| `prelude.enabled`         | `true`                                     | If true, then elements before the first h2 is wrapped on its own section |
+| `prelude.tagName`         | `"section"`                                | Tag name used in the prelude section                                     |
+| `prelude.properties`      | `{}`                                       | Properties to add to the prelude section                                 |
 |                           |                                            |
-| `body.enabled`            | `false`                                    | Enables the body wrapper                                      |
-| `body.tagName`            | `"div"`                                    | Tag name used in the body inside the section                  |
-| `body.properties`         | `{}`                                       | Properties to add to the body wrapper                         |
+| `section.tagName`         | `"section"`                                | Tag name used in the section                                             |
+| `section.properties`      | `{}`                                       | Properties to add to the section                                         |
+| `section.addHeadingClass` | `true`                                     | If true, class names from the H2 will be added to the section            |
+|                           |                                            |
+| `body.enabled`            | `false`                                    | Enables the body wrapper                                                 |
+| `body.tagName`            | `"div"`                                    | Tag name used in the body inside the section                             |
+| `body.properties`         | `{}`                                       | Properties to add to the body wrapper                                    |
 
 ## Thanks
 

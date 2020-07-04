@@ -17,6 +17,7 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
     ...opts,
     section: { ...defaults.section, ...opts.section },
     body: { ...defaults.body, ...opts.body },
+    prelude: { ...defaults.prelude, ...opts.prelude },
   };
 
   /** Main run routine */
@@ -33,39 +34,51 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
     return root;
   }
 
-  /** Checks if a given node should be processed */
-  function isParent(node: Node): boolean {
-    if (node._wrapped) return false;
-    if (!node.children) return false;
-    if (!Array.isArray(node.children)) return false;
-    return !!node.children.find((node) => isHeading(node, options));
-  }
-
-  /** Checks if a node can be placed inside a section body */
-  function isChild(node: Node): boolean {
-    return options.allowedTypes[node.type];
-  }
-
   /** Wrap nodes into sections */
   function wrapNodes(nodes: Node[]): Node[] {
-    let [section, body] = createSection();
-    const sections: (Node[] | Node)[] = [section];
+    let section, body;
+    let sections: (Node[] | Node)[] = [];
+
+    if (options.prelude.enabled) {
+      [section, body] = createPrelude();
+      sections.push(section);
+    }
 
     for (let node of nodes) {
       if (isHeading(node, options)) {
         // If the previous section has nothing in it, remove it
-        if (!hasChildren(body)) sections.pop();
+        if (body && !hasChildren(body)) sections.pop();
         [section, body] = createSection(node);
         sections.push(section);
         section.children.unshift(node);
       } else if (isChild(node)) {
-        if (body.children) body.children.push(node);
+        if (!body) {
+          // Prelude mode:
+          // the nodes go to the top level if prelude.enabled: false.
+          sections.push(node);
+        } else if (body.children) {
+          body.children.push(node);
+        }
       } else {
         sections.push(node);
       }
     }
 
     return sections.flat(1);
+  }
+
+  /** Creates a prelude section. */
+  function createPrelude(): [ParentNode, ParentNode] {
+    // return createSection();
+
+    const section: ParentNode = {
+      type: "element",
+      properties: { ...options.prelude.properties },
+      tagName: options.prelude.tagName,
+      children: [],
+      _wrapped: true,
+    };
+    return [section, section];
   }
 
   /** Create a section. */
@@ -85,7 +98,7 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
       }
     }
 
-    // TODO options.body.addHeadingClass
+    // Create the body
     if (options.body.enabled) {
       const body: ParentNode = {
         type: "element",
@@ -100,6 +113,19 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
     } else {
       return [section, section];
     }
+  }
+
+  /** Checks if a given node should be processed */
+  function isParent(node: Node): boolean {
+    if (node._wrapped) return false;
+    if (!node.children) return false;
+    if (!Array.isArray(node.children)) return false;
+    return !!node.children.find((node) => isHeading(node, options));
+  }
+
+  /** Checks if a node can be placed inside a section body */
+  function isChild(node: Node): boolean {
+    return options.allowedTypes[node.type];
   }
 
   return run;
