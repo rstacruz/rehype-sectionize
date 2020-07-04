@@ -90,6 +90,7 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
       const body: ParentNode = {
         type: "element",
         tagName: "div",
+        properties: { ...options.body.properties },
         children: [],
         _wrapped: true,
       };

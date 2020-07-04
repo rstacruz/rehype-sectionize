@@ -177,3 +177,35 @@ it("h2 and h3", () => {
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
 
+it("add body with classes", () => {
+  const source = (
+    <main>
+      <h2>Introduction</h2>
+      <p>Hello there</p>
+      <p>This is an introduction</p>
+      <h2>Thanks</h2>
+      <p>That's all</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <section>
+        <h2>Introduction</h2>
+        <div className="body">
+          <p>Hello there</p>
+          <p>This is an introduction</p>
+        </div>
+      </section>
+      <section>
+        <h2>Thanks</h2>
+        <div className="body">
+          <p>That's all</p>
+        </div>
+      </section>
+    </main>
+  );
+
+  wrap({ body: { enabled: true, properties: { className: "body" } } })(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
