@@ -1,4 +1,4 @@
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 import { Node, Options, ParentNode, PartialOptions } from "./types";
 import { hasChildren, addClass, isHeading } from "./utils";
 import { defaults } from "./defaults";
