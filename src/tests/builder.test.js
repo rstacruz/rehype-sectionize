@@ -1,6 +1,6 @@
 import { u } from "unist-builder";
 import { h } from "hastscript";
-import { plugin as wrap } from "../index";
+import { plugin as wrap } from "../../lib/index";
 import toHtml from "hast-util-to-html";
 
 it("works with builder", () => {
