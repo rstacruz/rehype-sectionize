@@ -11,22 +11,23 @@
     "moduleResolution": "node",
 
     // Files to generate
-    "declaration": true, //    Generate .d.ts files
-    "declarationMap": true, // Generate .d.ts.map
-    "sourceMap": true, //      Generate .js.map
+    "declaration": true, //     Generate .d.ts files
+    "declarationMap": false, // Generate .d.ts.map
+    "sourceMap": false, //      Generate .js.map
 
     // Jsx
     "jsx": "preserve",
 
     // Strict mode
-    "strict": true
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "coverage",
-    "node_modules/@types/babel__core/**",
     "node_modules/@types/jest/**/*",
     "**/*.test.js"
   ]

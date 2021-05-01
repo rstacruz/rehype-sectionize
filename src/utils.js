@@ -1,18 +1,26 @@
-import { Node, Options } from "./types";
+/**
+ * @typedef {import('./types').Node} Node
+ * @typedef {import('./types').Options} Options
+ */
 
 /**
  * Checks if a node is not empty
+ * @param {Node} node
+ * @return {boolean}
  */
 
-export function hasChildren(node: Node): boolean {
+export function hasChildren(node) {
   return Array.isArray(node.children) && node.children.length !== 0;
 }
 
 /**
  * Add a class name to a node
+ * @param {Node} node
+ * @param {string} className
+ * @return {void}
  */
 
-export function addClass(node: Node, className: string): void {
+export function addClass(node, className) {
   if (!node.properties) node.properties = {};
 
   if (node.properties.className) {
@@ -24,8 +32,11 @@ export function addClass(node: Node, className: string): void {
 
 /**
  * Checks if a node is a heading
+ * @param {Node} node
+ * @param {Options} options
+ * @return {boolean}
  */
 
-export function isHeading(node: Node, options: Options): boolean {
+export function isHeading(node, options) {
   return node.type === "element" && node.tagName === options.level;
 }

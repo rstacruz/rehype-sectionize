@@ -1,5 +1,5 @@
 import { h } from "hastscript";
-import { plugin as wrap } from "../../lib/index";
+import { plugin as wrap } from "../index";
 import toHtml from "hast-util-to-html";
 
 const h2 = (...args) => h("h2", ...args);
