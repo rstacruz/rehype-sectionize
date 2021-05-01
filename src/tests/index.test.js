@@ -118,6 +118,31 @@ it("add heading class to body", () => {
   expect(toHtml(source)).toEqual(toHtml(expected));
 });
 
+it("custom body tagName", () => {
+  const source = (
+    <main>
+      <h2>Introduction</h2>
+      <p>Hello there</p>
+    </main>
+  );
+
+  const expected = (
+    <main>
+      <section>
+        <h2>Introduction</h2>
+        <body-section>
+          <p>Hello there</p>
+        </body-section>
+      </section>
+    </main>
+  );
+
+  wrap({
+    body: { enabled: true, tagName: "body-section" },
+  })(source);
+  expect(toHtml(source)).toEqual(toHtml(expected));
+});
+
 it("add heading class to existing class", () => {
   const source = (
     <main>

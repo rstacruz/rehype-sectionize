@@ -101,7 +101,7 @@ export function plugin(opts: PartialOptions | PartialOptions[] = {}) {
     if (options.body.enabled) {
       const body: ParentNode = {
         type: "element",
-        tagName: "div",
+        tagName: options.body.tagName,
         properties: { ...options.body.properties },
         children: [],
         _wrapped: true,
