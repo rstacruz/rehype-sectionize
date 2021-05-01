@@ -6,6 +6,7 @@
   "bugs": {
     "url": "https://github.com/rstacruz/rehype-sectionize/issues"
   },
+  "type": "module",
   "dependencies": {
     "babel-jest": "^26.6.3",
     "unist-util-visit": "^3.0.0"
@@ -28,6 +29,7 @@
   ],
   "license": "MIT",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"

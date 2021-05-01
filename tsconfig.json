@@ -4,18 +4,16 @@
     "outDir": "./lib",
     "rootDir": "./src",
 
-    // Generated code style
-    "target": "es5", //        es5 | es2015 | esnext
+    "target": "es2020",
+    "lib": ["es2020"], // allow Map, Set, .flat, etc
+    "module": "es2020",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
 
     // Files to generate
     "declaration": true, //    Generate .d.ts files
     "declarationMap": true, // Generate .d.ts.map
     "sourceMap": true, //      Generate .js.map
-
-    // Compatibility
-    "lib": ["es2020"], //      Allow Map, Set, .flat, etc
-    "moduleResolution": "node",
-    "esModuleInterop": true,
 
     // Jsx
     "jsx": "preserve",
