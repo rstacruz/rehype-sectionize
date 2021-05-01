@@ -11,7 +11,6 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.9.0",
-    "@babel/plugin-transform-react-jsx": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
     "@types/jest": "^25.2.1",
     "hast-util-to-html": "^7.1.0",
