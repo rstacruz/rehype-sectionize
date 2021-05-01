@@ -1,4 +1,4 @@
-import h from "hastscript";
+import { h } from "hastscript";
 import { plugin as wrap } from "../index";
 import toHtml from "hast-util-to-html";
 
