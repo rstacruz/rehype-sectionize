@@ -1,15 +1,4 @@
-import { Node as UnistNode } from "unist";
-
-export type LeafNode = UnistNode & {
-  properties?: { [key: string]: string };
-};
-
-export type ParentNode = LeafNode & {
-  tagName: string;
-  children: Node[];
-};
-
-export type Node = LeafNode | ParentNode;
+import { Properties } from "hast";
 
 /** Options */
 export type Options = {
@@ -17,18 +6,18 @@ export type Options = {
   level: string;
   prelude: {
     enabled: boolean;
-    properties: { [key: string]: string };
+    properties: Properties;
     tagName: string;
   };
   section: {
     addHeadingClass: boolean;
-    properties: { [key: string]: string };
+    properties: Properties;
     tagName: string;
   };
   body: {
     addHeadingClass: boolean;
     enabled: boolean;
-    properties: { [key: string]: string };
+    properties: Properties;
     tagName: string;
   };
 };

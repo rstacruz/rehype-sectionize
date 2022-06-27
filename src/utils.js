@@ -1,11 +1,11 @@
 /**
- * @typedef {import('./types').Node} Node
- * @typedef {import('./types').Options} Options
+ * @typedef {import('hast').ElementContent} ElementContent
+ * @typedef {import('hast').Element} Element
  */
 
 /**
  * Checks if a node is not empty
- * @param {Node} node
+ * @param {Element} node
  * @return {boolean}
  */
 
@@ -15,7 +15,7 @@ export function hasChildren(node) {
 
 /**
  * Add a class name to a node
- * @param {Node} node
+ * @param {Element} node
  * @param {string} className
  * @return {void}
  */
@@ -32,9 +32,9 @@ export function addClass(node, className) {
 
 /**
  * Checks if a node is a heading
- * @param {Node} node
- * @param {Options} options
- * @return {boolean}
+ * @param {ElementContent} node
+ * @param {{ level?: string }} options
+ * @return {node is Element}
  */
 
 export function isHeading(node, options) {

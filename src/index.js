@@ -3,9 +3,10 @@ import { hasChildren, addClass, isHeading } from "./utils.js";
 import { defaults } from "./defaults.js";
 
 /**
- * @typedef {import('./types').Node} Node
+ * @typedef {import('hast').ElementContent} ElementContent - element or comment or text
+ * @typedef {import('hast').Element} Element
+ * @typedef {Element & { _wrapped?: boolean }} ElementExt - with extra state
  * @typedef {import('./types').Options} Options
- * @typedef {import('./types').ParentNode} ParentNode
  * @typedef {import('./types').PartialOptions} PartialOptions
  */
 
@@ -30,16 +31,20 @@ export function plugin(opts = {}) {
 
   /**
    * Main run routine
-   * @param {Node} root
-   * @return {Node}
+   * @param {Element} root
+   * @return {Element}
    */
   function run(root) {
-    visit(root, isParent, (/** @type {ParentNode} */ node) => {
-      node.children = wrapNodes(node.children);
-    });
+    /** @type {any} */ (visit)(
+      root,
+      isParent,
+      (/** @type {Element} */ node) => {
+        node.children = wrapNodes(node.children);
+      }
+    );
 
     // Delete the `_wrapped` flags
-    visit(root, (/** @type {Node} */ node) => {
+    visit(root, (/** @type {any} */ node) => {
       if (node._wrapped) delete node._wrapped;
     });
 
@@ -48,13 +53,13 @@ export function plugin(opts = {}) {
 
   /**
    * Wrap nodes into sections
-   * @param {Node[]} nodes
-   * @return {Node[]}
+   * @param {ElementContent[]} nodes
+   * @return {ElementContent[]}
    * */
   function wrapNodes(nodes) {
     let section, body;
 
-    /** @type {(Node[] | Node)[]} */
+    /** @type {(ElementContent[] | ElementContent)[]} */
     let sections = [];
 
     if (options.prelude.enabled) {
@@ -87,16 +92,14 @@ export function plugin(opts = {}) {
 
   /**
    * Creates a prelude section.
-   * @return {[ParentNode, ParentNode]}
+   * @return {[Element, Element]}
    */
   function createPrelude() {
-    // return createSection();
-
-    /* @type {ParentNode} */
+    /** @type {ElementExt} */
     const section = {
       type: "element",
-      properties: { ...options.prelude.properties },
       tagName: options.prelude.tagName,
+      properties: { ...options.prelude.properties },
       children: [],
       _wrapped: true,
     };
@@ -105,12 +108,12 @@ export function plugin(opts = {}) {
 
   /**
    * Create a section.
-   * @param {Node | void} heading
-   * @return {[ParentNode, ParentNode]}
+   * @param {Element | void} heading
+   * @return {[Element, Element]}
    */
 
   function createSection(heading) {
-    /** @type {ParentNode} */
+    /** @type {ElementExt} */
     const section = {
       type: "element",
       properties: { ...options.section.properties },
@@ -123,11 +126,11 @@ export function plugin(opts = {}) {
       heading && heading.properties && heading.properties.className;
 
     // Add H2 class name
-    if (headingClass) addClass(section, headingClass);
+    if (headingClass) addClass(section, headingClass.toString());
 
     // Create the body
     if (options.body.enabled) {
-      /** @type {ParentNode} */
+      /** @type {ElementExt} */
       const body = {
         type: "element",
         tagName: options.body.tagName,
@@ -136,9 +139,9 @@ export function plugin(opts = {}) {
         _wrapped: true,
       };
 
-      // Add H2 class anme
+      // Add H2 class name
       if (headingClass && options.body.addHeadingClass) {
-        addClass(body, headingClass);
+        addClass(body, headingClass.toString());
       }
 
       section.children = [body];
@@ -150,11 +153,11 @@ export function plugin(opts = {}) {
 
   /**
    * Checks if a given node should be processed
-   * @param {Node} node
-   * @return {node is ParentNode}
+   * @param {Element} node
+   * @return {boolean}
    */
   function isParent(node) {
-    if (node._wrapped) return false;
+    if (/** @type {any} */ (node)._wrapped) return false;
     if (!node.children) return false;
     if (!Array.isArray(node.children)) return false;
     return !!node.children.find((node) => isHeading(node, options));
@@ -162,7 +165,7 @@ export function plugin(opts = {}) {
 
   /**
    * Checks if a node can be placed inside a section body
-   * @param {Node} node
+   * @param {ElementContent} node
    * @return {boolean}
    */
   function isChild(node) {
@@ -177,7 +180,7 @@ export function plugin(opts = {}) {
  * @param {PartialOptions[]} optionsList
  */
 function multi(optionsList = []) {
-  return (/** @type {Node} */ root) => {
+  return (/** @type {Element} */ root) => {
     for (let options of optionsList) plugin(options)(root);
     return root;
   };
