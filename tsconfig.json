@@ -28,7 +28,7 @@
   ],
   "exclude": [
     "coverage",
-    "node_modules/@types/jest/**/*",
+    "node_modules/**/*.ts",
     "**/*.test.js"
   ]
 }
