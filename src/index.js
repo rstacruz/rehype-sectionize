@@ -1,6 +1,6 @@
 import { visit } from "unist-util-visit";
-import { hasChildren, addClass, isHeading } from "./utils";
-import { defaults } from "./defaults";
+import { hasChildren, addClass, isHeading } from "./utils.js";
+import { defaults } from "./defaults.js";
 
 /**
  * @typedef {import('./types').Node} Node
